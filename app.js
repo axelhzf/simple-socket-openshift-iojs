@@ -1,11 +1,24 @@
-var app = require('http').createServer(handler);
-var io = require('socket.io')(app);
+//var app = require('http').createServer(handler);
+var koa = require("koa");
+
 var fs = require('fs');
 
+var ip = process.env.OPENSHIFT_IOJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_IOJS_PORT || 3000;
 
-var ipaddress = process.env.OPENSHIFT_IOJS_IP || "127.0.0.1";
-var port      = process.env.OPENSHIFT_IOJS_PORT || 3000;
+var app = koa();
 
+
+app.use(function* () {
+  var file = fs.readFileSync(__dirname + '/index.html');
+  this.set("content-type", "text/html");
+  this.body =  file;
+});
+
+
+var server = app.listen(port, ip);
+
+var io = require('socket.io')(server);
 io.set('transports', ['websocket',
   'flashsocket',
   'htmlfile',
@@ -13,25 +26,9 @@ io.set('transports', ['websocket',
   'jsonp-polling',
   'polling']);
 
-app.listen(port, ipaddress);
-
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-    function (err, data) {
-      if (err) {
-        res.writeHead(500);
-        return res.end('Error loading index.html');
-      }
-
-      res.setHeader("content-type", "text/html");
-      res.writeHead(200);
-      res.end(data);
-    });
-}
-
 io.on('connection', function (socket) {
   setInterval(function () {
-    socket.emit('news', { hello: 'world' });
+    socket.emit('news', {hello: 'world'});
   }, 100);
 
   socket.on('my other event', function (data) {
