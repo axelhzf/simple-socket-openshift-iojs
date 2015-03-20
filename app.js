@@ -6,7 +6,12 @@ var fs = require('fs');
 var ipaddress = process.env.OPENSHIFT_IOJS_IP || "127.0.0.1";
 var port      = process.env.OPENSHIFT_IOJS_PORT || 8080;
 
-io.use('transports', ['websocket']);
+io.use('transports', ['websocket',
+  'flashsocket',
+  'htmlfile',
+  'xhr-polling',
+  'jsonp-polling',
+  'polling']);
 
 app.listen(port, ipaddress);
 
