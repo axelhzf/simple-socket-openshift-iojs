@@ -1,14 +1,13 @@
 {
-  "name": "simple-socket",
+  "name": "simple-socket-openshift-iojs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "koa": "^0.18.1",
     "socket.io": "^1.3.5"
