@@ -16,6 +16,7 @@ function handler (req, res) {
         return res.end('Error loading index.html');
       }
 
+      res.setHeader("content-type", "text/html");
       res.writeHead(200);
       res.end(data);
     });
