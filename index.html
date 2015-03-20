@@ -9,7 +9,9 @@
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io('ws://ws-socialnoise.rhcloud.com:8000');
+  var socket = io('ws://ws-socialnoise.rhcloud.com:8000', {
+    transports: ["websocket"]
+  });
   socket.on('news', function (data) {
     console.log(data);
     socket.emit('my other event', {my: 'data'});
