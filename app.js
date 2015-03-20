@@ -4,9 +4,9 @@ var fs = require('fs');
 
 
 var ipaddress = process.env.OPENSHIFT_IOJS_IP || "127.0.0.1";
-var port      = process.env.OPENSHIFT_IOJS_PORT || 8080;
+var port      = process.env.OPENSHIFT_IOJS_PORT || 3000;
 
-io.use('transports', ['websocket',
+io.set('transports', ['websocket',
   'flashsocket',
   'htmlfile',
   'xhr-polling',
@@ -30,7 +30,10 @@ function handler (req, res) {
 }
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+  setInterval(function () {
+    socket.emit('news', { hello: 'world' });
+  }, 100);
+
   socket.on('my other event', function (data) {
     console.log(data);
   });
